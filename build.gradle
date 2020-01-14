@@ -1,0 +1,116 @@
+plugins {
+    id 'java'
+        // https://docs.gradle.org/current/userguide/jacoco_plugin.html
+    id 'jacoco'
+        // https://docs.gradle.org/current/userguide/pmd_plugin.html#header
+    id 'pmd'
+}
+
+group 'PDPCS5010Assignment1'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'com.google.guava', name: 'guava', version: '28.2-jre'
+
+    // https://projectlombok.org/setup/gradle
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+}
+
+
+pmd {
+    ignoreFailures=true
+    pmdTest.enabled=true
+    ruleSets = [
+            "category/java/bestpractices.xml",
+            "category/java/errorprone.xml",
+            "category/java/codestyle.xml"
+            //"java-basic",
+            //"java-braces",
+            //"java-strings",
+    ]
+}
+
+
+
+jacoco {
+    toolVersion = "0.8.4"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                // minimum percentage of code coverage
+                minimum = 0.3
+            }
+        }
+        rule {
+            enabled = false
+            element = 'CLASS'
+            includes = ['org.gradle.*']
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 0.3
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification
+jacocoTestReport.mustRunAfter test
+
+
+test {
+    finalizedBy jacocoTestReport
+}
+
+javadoc {
+    doLast {
+        println "file://$buildDir/docs/javadoc/index.html"
+    }
+}
+
+
+// TASKS
+
+task docs(type: Javadoc) {
+    source = sourceSets.main.allJava
+}
+
+
+task debuggingGradle {
+    dependsOn check
+}
+
+task doAll {
+    // Runs a java build.  Imported from the java plugin
+    dependsOn build
+    // Runs all the tests.  Imported from the java plugin.
+    dependsOn test
+    // Runs pmd. Imported by pmd plugin
+    dependsOn check
+    // Runs java doc. Imported from the java plugin
+    dependsOn javadoc
+
+    println 'all done!'
+}
