@@ -1,14 +1,14 @@
 package assignment1.problem1;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
-public final class Address {
-  @NonNull private final String street;
-  @NonNull private final String city;
-  @NonNull private final String state;
-  @NonNull private final String zip;
+public class Address {
+  private final String street;
+  private final String city;
+  private final String state;
+  private final String zip;
+
 }

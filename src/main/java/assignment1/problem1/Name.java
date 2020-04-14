@@ -1,12 +1,11 @@
 package assignment1.problem1;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
-public final class Name {
-  @NonNull private final String firstName;
-  @NonNull private final String lastName;
+public class Name {
+  private final String firstName;
+  private final String lastName;
 }

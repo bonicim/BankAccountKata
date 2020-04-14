@@ -7,36 +7,39 @@ import org.junit.Test;
 
 public class TransitCardTest {
   private TransitCard transitCard;
-  private CardOwner cardOwner;
-  private Balance balance;
-  private Name name;
 
   @Before
   public void setUp() throws Exception {
-    name = new Name("Homer", "Simpson");
-    cardOwner = new CardOwner(name,
-                              new Address("1234", "Seattle", "WA", "98155"),
-                              new EmailAddress("homer@simpsons.com"));
-    balance = new Balance(4, 20);
-    transitCard = new TransitCard(cardOwner, balance);
+    transitCard = new TransitCard(
+                    new ContactInfo(
+                        new Name("Homer", "Simpson"),
+                        new Address("1234", "Seattle", "WA", "98155"),
+                        new EmailAddress("homer@simpsons.com")),
+                    new Balance(4, 20, new Name("Homer", "Simpson")));
   }
 
   @Test
   public void depositMoneyWithCorrectNameShouldIncreaseBalance() {
-    TransitCard expected = new TransitCard(cardOwner, new Balance(9, 20));
+    TransitCard expected = new TransitCard(
+                            new ContactInfo(
+                              new Name("Homer", "Simpson"),
+                              new Address("1234", "Seattle", "WA", "98155"),
+                              new EmailAddress("homer@simpsons.com")),
+                            new Balance(9, 20, new Name("Homer", "Simpson")));
 
-    TransitCard actual = transitCard.depositMoney(new Deposit(5,0, name));
+
+    TransitCard actual = transitCard.depositMoney(new Balance(5,0, new Name("Homer", "Simpson")));
 
     assertEquals(expected, actual);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void depositMoneyWithDifferentNameFromCardOwner() {
-    transitCard.depositMoney(new Deposit(25,20,new Name("Barry", "Sanders")));
+    transitCard.depositMoney(new Balance(25,20,new Name("Barry", "Sanders")));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void depositMoneyNotWithinRange() {
-    transitCard.depositMoney(new Deposit(1,20, name));
+    transitCard.depositMoney(new Balance(1,20, new Name("Homer", "Simpson")));
   }
 }

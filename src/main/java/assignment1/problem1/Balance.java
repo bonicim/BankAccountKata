@@ -1,10 +1,25 @@
 package assignment1.problem1;
 
-import lombok.NonNull;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 
-public final class Balance extends AbstractBalance {
+@AllArgsConstructor
+@EqualsAndHashCode
+public class Balance {
+  private final Integer dollars;
+  private final Integer cents;
+  private final Name name;
 
-  public Balance(@NonNull Integer dollars, @NonNull Integer cents) {
-    super(dollars, cents);
+  public Balance add(Balance balance) {
+    return new Balance(this.dollars + balance.dollars, this.cents + balance.cents, this.name);
   }
+
+  public Boolean isCardOwner(ContactInfo contactInfo) {
+    return !contactInfo.matchesName(name);
+  }
+
+  public boolean outOfRange() {
+    return (dollars < 5) || (dollars >= 50 && cents > 0);
+  }
+
 }
