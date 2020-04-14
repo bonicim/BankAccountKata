@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
-    compile group: 'com.google.guava', name: 'guava', version: '28.2-jre'
+    implementation 'com.google.guava:guava:28.2-jre'
 
     // https://projectlombok.org/setup/gradle
     compileOnly 'org.projectlombok:lombok:1.18.10'
