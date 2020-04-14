@@ -1,9 +1,11 @@
 plugins {
     id 'java'
-        // https://docs.gradle.org/current/userguide/jacoco_plugin.html
+    // https://docs.gradle.org/current/userguide/jacoco_plugin.html
     id 'jacoco'
-        // https://docs.gradle.org/current/userguide/pmd_plugin.html#header
+    // https://docs.gradle.org/current/userguide/pmd_plugin.html#header
     id 'pmd'
+    // https://docs.gradle.org/current/userguide/checkstyle_plugin.html
+    id 'checkstyle'
 }
 
 group 'PDPCS5010Assignment1'
@@ -16,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'junit:junit:4.12'
     compile group: 'com.google.guava', name: 'guava', version: '28.2-jre'
 
     // https://projectlombok.org/setup/gradle
